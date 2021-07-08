@@ -29,3 +29,11 @@ spring:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.stone.demo.model
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: enabled
+      logic-delete-value: 0
+      logic-not-delete-value: 1
