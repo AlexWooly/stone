@@ -11,6 +11,15 @@ spring:
     host: 47.98.122.108
     port: 6379
     password: stone123456
+
+
+
+  mvc:
+    static-path-pattern: /media/**
+  web:
+    resources:
+      static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${media.dir}
+
 #    #指定redis底层客户端实现
 #    client-type: lettuce
 #    lettuce:
@@ -38,3 +47,5 @@ mybatis-plus:
       logic-delete-field: enabled
       logic-delete-value: 0
       logic-not-delete-value: 1
+
+

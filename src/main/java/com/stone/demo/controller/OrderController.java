@@ -34,7 +34,7 @@ public class OrderController {
      * @param openId 用户open_id
      * @return 用户个人订单列表
      */
-    @GetMapping("get_personal_order")
+    @GetMapping("/get_personal_order")
     public JsonData getPersonalOrder(@RequestParam("openId")String openId){
         return JsonData.buildSuccess(orderService.findByUserId(openId));
     }
