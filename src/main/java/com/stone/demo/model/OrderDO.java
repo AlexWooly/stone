@@ -1,6 +1,6 @@
 package com.stone.demo.model;
 
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -13,12 +13,18 @@ import java.time.LocalDateTime;
 @TableName("order_p")
 @Data
 public class OrderDO {
-    private String id;
+
+    @TableId(type = IdType.INPUT)
+    private Long id;
+
     private String openId;
     private Integer productId;
     private Integer num;
     private double totalPrice;
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime gmtCreated;
-    private Integer enabled;
+    private String status;
+//    private Integer enabled;
+
 
 }

@@ -1,11 +1,16 @@
 package com.stone.demo.conf;
 
 import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Date;
 
 /**
  * @Author NJUPT wly
@@ -13,7 +18,8 @@ import org.springframework.context.annotation.Configuration;
  * @Version 1.0
  */
 @Configuration
-public class MybatisConfig {
+@Slf4j
+public class MybatisConfig implements MetaObjectHandler {
 
     /**
      * 新的分页插件
@@ -28,4 +34,12 @@ public class MybatisConfig {
         return interceptor;
     }
 
+    @Override
+    public void insertFill(MetaObject metaObject) {
+        this.setFieldValByName("createTime",new Date(),metaObject);
+    }
+
+    @Override
+    public void updateFill(MetaObject metaObject) {
+    }
 }

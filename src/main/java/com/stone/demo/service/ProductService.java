@@ -18,4 +18,5 @@ public interface ProductService {
     public List<ProductDO> findByName(String name);
 
     public Set<String> findAllType();
+
 }

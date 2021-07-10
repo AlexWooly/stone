@@ -1,13 +1,11 @@
 package com.stone.demo.controller;
 
+import com.stone.demo.entity.Order;
 import com.stone.demo.service.OrderService;
 import com.stone.demo.service.ProductService;
 import com.stone.demo.util.JsonData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,6 +37,25 @@ public class OrderController {
     @GetMapping("get_personal_order")
     public JsonData getPersonalOrder(@RequestParam("openId")String openId){
         return JsonData.buildSuccess(orderService.findByUserId(openId));
+    }
+
+    /**
+     * 更新订单状态（支付成功）
+     * @param openIds 需要更新的订单
+     */
+    @GetMapping("/pay_success")
+    public JsonData paySuccess(@RequestParam("order_ids")List<String> openIds){
+        openIds.forEach(o->orderService.paySuccess(o));
+        return JsonData.buildSuccess("订单支付成功");
+    }
+
+    /**
+     * 创建订单
+     * @return
+     */
+    @PostMapping("/make_order")
+    public JsonData makeOrder(@RequestBody Order order){
+        return JsonData.buildSuccess(orderService.makeOrder(order));
     }
 
 }

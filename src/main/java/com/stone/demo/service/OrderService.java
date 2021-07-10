@@ -1,6 +1,9 @@
 package com.stone.demo.service;
 
+import com.stone.demo.entity.Order;
 import com.stone.demo.model.OrderDO;
+import com.stone.demo.model.ProductDO;
+import org.aspectj.weaver.ast.Or;
 
 import java.util.List;
 
@@ -13,4 +16,8 @@ public interface OrderService {
     public List<OrderDO> list();
 
     public List<OrderDO> findByUserId(String openId);
+
+    public int paySuccess(String orderId);
+
+    public List<String> makeOrder(Order order);
 }
