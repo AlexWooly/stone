@@ -131,6 +131,7 @@ public class OrderServiceImpl implements OrderService {
                 orderDO.setStatus(OrderStatus.PAYING.toString());
                 //TODO 优惠券
                 orderMapper.insert(orderDO);
+                msg.add(id.toString());
 
             } catch (Exception e) {
                 log.error("",e);

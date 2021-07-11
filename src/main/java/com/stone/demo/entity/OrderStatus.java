@@ -7,6 +7,10 @@ package com.stone.demo.entity;
  */
 public enum OrderStatus {
     /**
+     * 未创建
+     */
+    Creating,
+    /**
      * 已支付
      */
     PAYED,

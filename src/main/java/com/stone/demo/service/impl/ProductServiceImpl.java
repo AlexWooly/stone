@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.stone.demo.mapper.ProductMapper;
 import com.stone.demo.model.ProductDO;
 import com.stone.demo.service.ProductService;
+import com.stone.demo.vo.CartItemVO;
+import com.stone.demo.vo.CartVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +43,10 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.selectList(new QueryWrapper<ProductDO>().like("name",name));
     }
 
+    /**
+     * 获取所有产品种类
+     * @return
+     */
     @Override
     public Set<String> findAllType() {
         List<ProductDO> productDOS = productMapper.selectList(new QueryWrapper<ProductDO>().select("type"));
@@ -49,7 +55,25 @@ public class ProductServiceImpl implements ProductService {
         return set;
     }
 
+    /**
+     * 放入购物车
+     * @param cartItemVO
+     * @return
+     */
+    @Override
+    public int insertCart(CartItemVO cartItemVO) {
+        try {
+            getMyCart().getCartItems().add(cartItemVO);
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+        return 1;
+    }
 
+    public CartVO getMyCart(){
+        return new CartVO();
+    }
 
 
 }

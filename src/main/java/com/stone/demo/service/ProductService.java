@@ -1,6 +1,7 @@
 package com.stone.demo.service;
 
 import com.stone.demo.model.ProductDO;
+import com.stone.demo.vo.CartItemVO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,5 +19,7 @@ public interface ProductService {
     public List<ProductDO> findByName(String name);
 
     public Set<String> findAllType();
+
+    int insertCart(CartItemVO cartItemVO);
 
 }
