@@ -38,7 +38,7 @@ class StoneApplicationTests {
 	void test() {
 		WorkSubmit workSubmit = new WorkSubmit();
 		workSubmit.setDetail("tsst");
-		workSubmit.setName("word");
+		workSubmit.setTitle("word");
 		workSubmit.setPath("www.");
 		workSubmit.setOpen_id("123");
 		workSubmit.setPhone(1223);
@@ -59,7 +59,7 @@ class StoneApplicationTests {
 	void meinset(){
 		MessageDO messageDO = new MessageDO();
 		messageDO.setContent("test2");
-		messageDO.setOpen_id("wlysda");
+		messageDO.setOpenId("wlysda");
 		messageDO.setTag("TEST2");
 		messageDO.setParentId(1);
 		messageService.report(messageDO);

@@ -20,6 +20,8 @@ public interface ProductService {
 
     public Set<String> findAllType();
 
-    int insertCart(CartItemVO cartItemVO);
+    public ProductDO findById(Integer id);
+
+//    int insertCart(CartItemVO cartItemVO);
 
 }

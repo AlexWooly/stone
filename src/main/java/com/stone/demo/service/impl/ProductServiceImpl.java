@@ -7,6 +7,7 @@ import com.stone.demo.service.ProductService;
 import com.stone.demo.vo.CartItemVO;
 import com.stone.demo.vo.CartVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -28,6 +29,7 @@ public class ProductServiceImpl implements ProductService {
      * @return 全部商品
      */
     @Override
+    @Cacheable(value = "product",keyGenerator = "springCacheCustomKeyGenerator",cacheManager = "cacheManager1Hour")
     public List<ProductDO> list() {
         return productMapper.selectList(new QueryWrapper<ProductDO>());
     }
@@ -39,6 +41,7 @@ public class ProductServiceImpl implements ProductService {
      * @return 模糊匹配商品
      */
     @Override
+    @Cacheable(value = "product",key="#args[0]",cacheManager = "cacheManager1Hour")
     public List<ProductDO> findByName(String name) {
         return productMapper.selectList(new QueryWrapper<ProductDO>().like("name",name));
     }
@@ -48,6 +51,7 @@ public class ProductServiceImpl implements ProductService {
      * @return
      */
     @Override
+    @Cacheable(value = "product_type",key = "#root.methodName",cacheManager = "cacheManager1Hour")
     public Set<String> findAllType() {
         List<ProductDO> productDOS = productMapper.selectList(new QueryWrapper<ProductDO>().select("type"));
         Set<String> set = new HashSet<>();
@@ -55,24 +59,10 @@ public class ProductServiceImpl implements ProductService {
         return set;
     }
 
-    /**
-     * 放入购物车
-     * @param cartItemVO
-     * @return
-     */
     @Override
-    public int insertCart(CartItemVO cartItemVO) {
-        try {
-            getMyCart().getCartItems().add(cartItemVO);
-        }catch (Exception e){
-            e.printStackTrace();
-            return 0;
-        }
-        return 1;
-    }
-
-    public CartVO getMyCart(){
-        return new CartVO();
+    @Cacheable(value = "product",key = "#root.args[0]",cacheManager = "cacheManager1Hour")
+    public ProductDO findById(Integer id) {
+        return productMapper.selectOne(new QueryWrapper<ProductDO>().eq("id",id));
     }
 
 

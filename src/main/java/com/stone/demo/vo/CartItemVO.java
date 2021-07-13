@@ -1,5 +1,8 @@
 package com.stone.demo.vo;
 
+import lombok.Data;
+
+@Data
 public class CartItemVO {
 
         /**
@@ -25,12 +28,12 @@ public class CartItemVO {
         /**
          * 商品单价
          */
-        private int price ;
+        private double price ;
 
         /**
          * 总价格，单价+数量
          */
-        private int totalPrice;
+        private double totalPrice;
 
 
         public int getProductId() {
@@ -69,20 +72,20 @@ public class CartItemVO {
          * 商品单价 * 购买数量
          * @return
          */
-        public int getTotalPrice() {
+        public double getTotalPrice() {
 
             return this.price*this.buyNum;
         }
 
-        public int getPrice() {
+        public double getPrice() {
             return price;
         }
 
-        public void setPrice(int price) {
+        public void setPrice(double price) {
             this.price = price;
         }
 
-        public void setTotalPrice(int totalPrice) {
+        public void setTotalPrice(double totalPrice) {
             this.totalPrice = totalPrice;
         }
 

@@ -5,6 +5,7 @@ import com.stone.demo.mapper.MsgImgMapper;
 import com.stone.demo.model.MessageImgDO;
 import com.stone.demo.service.MsgImgService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class MsgImgServiceImpl implements MsgImgService {
      * @return
      */
     @Override
+    @Cacheable(value = "msgImg",key = "#root.args[0]",cacheManager = "cacheManager1Hour")
     public List<String> findByMessageId(Integer id) {
         List<MessageImgDO> messageImgDOS = msgImgMapper.selectList(new QueryWrapper<MessageImgDO>().eq("message_id",id));
         assert messageImgDOS != null;

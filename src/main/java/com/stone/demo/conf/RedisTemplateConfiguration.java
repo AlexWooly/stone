@@ -86,6 +86,16 @@ public class RedisTemplateConfiguration {
                 .build();
     }
 
+    @Bean
+    public RedisCacheManager cacheManager1Minute(RedisConnectionFactory connectionFactory) {
+
+        RedisCacheConfiguration config = instanceConfig(60L);
+        return RedisCacheManager.builder(connectionFactory)
+                .cacheDefaults(config)
+                .transactionAware()
+                .build();
+    }
+
     private RedisCacheConfiguration instanceConfig(Long ttl) {
 
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);

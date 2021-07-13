@@ -1,6 +1,8 @@
 package com.stone.demo.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.stone.demo.mapper.MessageMapper;
 import com.stone.demo.mapper.MsgImgMapper;
 import com.stone.demo.model.MessageDO;
@@ -8,6 +10,8 @@ import com.stone.demo.service.MessageService;
 import com.stone.demo.service.MsgImgService;
 import com.stone.demo.vo.MessageVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -47,7 +51,9 @@ public class MessageServiceImpl implements MessageService {
      * @return
      */
     @Override
+    @CacheEvict(value = {"message"},key = "#root.args[0]")
     public int deleteById(Integer id) {
+
         return messageMapper.deleteById(id);
     }
 
@@ -56,6 +62,7 @@ public class MessageServiceImpl implements MessageService {
      * @return
      */
     @Override
+    @Cacheable(value = "messgae",keyGenerator = "springCacheCustomKeyGenerator",cacheManager = "cacheManager1Hour")
     public List<MessageVO> list() {
         List<MessageDO> msgs = messageMapper.selectList(new QueryWrapper<MessageDO>());
         List<MessageVO> list = new ArrayList<>();
@@ -83,6 +90,18 @@ public class MessageServiceImpl implements MessageService {
 //        columnMap.put("id",id);
 //        columnMap.put("parent_id",id);
         return messageMapper.deleteBatchIds(listId);
+    }
+
+    @Override
+    @Cacheable(value = "message",keyGenerator = "springCacheCustomKeyGenerator",cacheManager = "cacheManager1Minute")
+    public Map<String, Object> page(int page, int size) {
+        Page pageInfo = new Page(page,size);
+        IPage<MessageDO> iPage = messageMapper.selectPage(pageInfo,null);
+        Map<String,Object> pageMap = new HashMap<>(3);
+        pageMap.put("total_record",iPage.getTotal());
+        pageMap.put("total_page",iPage.getPages());
+        pageMap.put("current_data",iPage.getRecords());
+        return pageMap;
     }
 
     /**

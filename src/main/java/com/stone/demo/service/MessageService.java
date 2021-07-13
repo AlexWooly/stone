@@ -5,6 +5,7 @@ import com.stone.demo.vo.MessageVO;
 import org.w3c.dom.ls.LSInput;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author NJUPT wly
@@ -19,4 +20,6 @@ public interface MessageService {
     List<MessageVO> list();
 
     int deleteByBatch(Integer id);
+
+    Map<String,Object> page(int page,int size);
 }

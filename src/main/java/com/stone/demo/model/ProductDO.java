@@ -15,7 +15,6 @@ public class ProductDO {
     private String name;
     private double price;
     private String type;
-    private Integer purchasedNum;
     private Integer stock;
     private String productInfo;
     private String productImg;

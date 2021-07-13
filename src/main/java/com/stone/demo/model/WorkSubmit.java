@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Data
 public class WorkSubmit {
     private Integer id;
-    private String name;
+    private String title;
     private String open_id;
     private String detail;
     private Integer phone;

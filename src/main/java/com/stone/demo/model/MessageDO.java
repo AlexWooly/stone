@@ -16,7 +16,7 @@ import java.util.List;
 @TableName("message")
 public class MessageDO {
     private Integer id;
-    private String open_id;
+    private String openId;
     private String tag;
     private String content;
     private Integer enabled;
