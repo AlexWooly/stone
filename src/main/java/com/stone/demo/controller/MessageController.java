@@ -4,10 +4,7 @@ import com.stone.demo.model.MessageDO;
 import com.stone.demo.service.MessageService;
 import com.stone.demo.util.JsonData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -33,8 +30,13 @@ public class MessageController {
         return JsonData.buildSuccess(messageService.report(messageDO));
     }
 
-    @RequestMapping("delete")
+    @DeleteMapping("delete")
     public JsonData dele(@RequestParam("id") int id){
         return JsonData.buildSuccess(messageService.deleteByBatch(id));
+    }
+
+    @GetMapping ("all")
+    public JsonData getAll(){
+        return JsonData.buildSuccess(messageService.list());
     }
 }

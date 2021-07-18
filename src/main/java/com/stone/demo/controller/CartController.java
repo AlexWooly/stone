@@ -100,6 +100,11 @@ public class CartController {
         return JsonData.buildSuccess(redisTemplate.delete(key));
     }
 
+    /**
+     * 获取我的购物车id
+     * @param openId
+     * @return
+     */
     private String getCardKey(String openId){
 //        int userId =88;
         String cartKey = String.format("video:cart:%s",openId);

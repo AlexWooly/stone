@@ -81,8 +81,8 @@ public class RedisTemplateConfiguration {
 
         RedisCacheConfiguration config = instanceConfig(3600 * 24L);
         return RedisCacheManager.builder(connectionFactory)
-                .cacheDefaults(config)
-                .transactionAware()
+                .cacheDefaults(config)  //默认缓存策略
+                .transactionAware() //更新删除上锁
                 .build();
     }
 
@@ -116,7 +116,6 @@ public class RedisTemplateConfiguration {
                 .entryTtl(Duration.ofSeconds(ttl))
                 //.disableCachingNullValues()
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer));
-
     }
 
     /**

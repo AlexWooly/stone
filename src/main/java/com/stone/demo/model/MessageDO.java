@@ -2,6 +2,10 @@ package com.stone.demo.model;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -21,5 +25,7 @@ public class MessageDO {
     private String content;
     private Integer enabled;
     private Integer parentId;
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime gmtCreated;
 }

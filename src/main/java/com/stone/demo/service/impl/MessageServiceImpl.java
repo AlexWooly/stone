@@ -12,12 +12,14 @@ import com.stone.demo.vo.MessageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author NJUPT wly
@@ -34,6 +36,9 @@ public class MessageServiceImpl implements MessageService {
 
     @Autowired
     MsgImgService msgImgService;
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
     /**
      * 发表消息
@@ -62,14 +67,23 @@ public class MessageServiceImpl implements MessageService {
      * @return
      */
     @Override
-    @Cacheable(value = "messgae",keyGenerator = "springCacheCustomKeyGenerator",cacheManager = "cacheManager1Hour")
+//    @Cacheable(value = "message",keyGenerator = "springCacheCustomKeyGenerator",cacheManager = "cacheManager1Hour")
     public List<MessageVO> list() {
-        List<MessageDO> msgs = messageMapper.selectList(new QueryWrapper<MessageDO>());
-        List<MessageVO> list = new ArrayList<>();
-        msgs.forEach(msg->{
-            list.add(invert(msg));
-        });
-        return list;
+        List<MessageVO> list = (List<MessageVO>)redisTemplate.opsForValue().get("msg:list");
+        if (list != null)
+        {
+            return list;
+        }else {
+            List<MessageDO> msgs = messageMapper.selectList(new QueryWrapper<MessageDO>());
+            List<MessageVO> list_new = new ArrayList<>();
+            msgs.forEach(msg->{
+                list_new.add(invert(msg));
+            });
+            //redis缓存，避免缓存穿透
+            redisTemplate.opsForValue().set("msg:list",list_new,60, TimeUnit.SECONDS);
+            return list_new;
+        }
+
     }
 
     /**
@@ -93,15 +107,22 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    @Cacheable(value = "message",keyGenerator = "springCacheCustomKeyGenerator",cacheManager = "cacheManager1Minute")
+//    @Cacheable(value = "message",keyGenerator = "springCacheCustomKeyGenerator",cacheManager = "cacheManager1Hour")
     public Map<String, Object> page(int page, int size) {
-        Page pageInfo = new Page(page,size);
-        IPage<MessageDO> iPage = messageMapper.selectPage(pageInfo,null);
-        Map<String,Object> pageMap = new HashMap<>(3);
-        pageMap.put("total_record",iPage.getTotal());
-        pageMap.put("total_page",iPage.getPages());
-        pageMap.put("current_data",iPage.getRecords());
-        return pageMap;
+        Map<String,Object> map = (Map<String,Object>)redisTemplate.opsForValue().get("msg:page");
+        if (map != null){
+            return map;
+        }
+        else {
+            Page pageInfo = new Page(page,size);
+            IPage<MessageDO> iPage = messageMapper.selectPage(pageInfo,null);
+            Map<String,Object> pageMap = new HashMap<>(3);
+            pageMap.put("total_record",iPage.getTotal());
+            pageMap.put("total_page",iPage.getPages());
+            pageMap.put("current_data",iPage.getRecords());
+            redisTemplate.opsForValue().set("msg:page",pageMap,60,TimeUnit.SECONDS);
+            return pageMap;
+        }
     }
 
     /**
