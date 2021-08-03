@@ -11,7 +11,7 @@ public class JsonData implements Serializable {
 
     private static final long serialVersionUID = -436777919049548143L;
 
-    private Integer code; // 状态码 0 表示成功，1表示处理中，-1表示失败
+    private Integer code; // 状态码 1 表示成功，0表示处理中，-1表示失败
     private Object data; // 数据
     private String msg;// 描述
 
@@ -32,17 +32,22 @@ public class JsonData implements Serializable {
 
     // 成功，传入数据
     public static JsonData buildSuccess() {
-        return new JsonData(0, null, null);
+        return new JsonData(1, null, null);
     }
 
     // 成功，传入数据
     public static JsonData buildSuccess(Object data) {
-        return new JsonData(0, data, null);
+        return new JsonData(1, data, null);
     }
 
     // 失败，传入描述信息
     public static JsonData buildError(String msg) {
         return new JsonData(-1, null, msg);
+    }
+
+    // 成功，传入数据,及描述信息
+    public static JsonData buildError(Object data, String msg) {
+        return new JsonData(1, data, msg);
     }
 
     // 失败，传入描述信息,状态码
@@ -52,7 +57,7 @@ public class JsonData implements Serializable {
 
     // 成功，传入数据,及描述信息
     public static JsonData buildSuccess(Object data, String msg) {
-        return new JsonData(0, data, msg);
+        return new JsonData(1, data, msg);
     }
 
     // 成功，传入数据,及状态码
@@ -62,7 +67,7 @@ public class JsonData implements Serializable {
 
     // 成功，传入描述信息
     public static JsonData buildSuccess(String msg) {
-        return new JsonData(0, null, msg);
+        return new JsonData(1, null, msg);
     }
 
 
